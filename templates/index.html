@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<link rel="stylesheet" href="{{url_for('static', filename='css/bootstrap.css', _external=True)}}">
+	<link rel="stylesheet" type="text/css" href={{url_for('static', filename='css/styles.css', _external=True)}}>
+	<script src="{{url_for('static', filename='js/script.js', _external=Ture)}}"></script>
+	<script src="{{url_for('static', filename='js/ajax-utils.js', _external=Ture)}}"></script>
+	<title>To be the best!小组管理工具</title>
+</head>
+<body>
+	<section class="header">
+  	<h1 class="project-name">欢迎使用To be the best!小组管理工具！</h1>
+  </section>
+    <!--<div>
+    	<img src="{{team_icon}}" width="100" height="100">
+    	 <span>
+	    	<h2>{{team_week_rank}}</h2>
+	    	<h2>{{team_check_rate}}</h2>
+	    </span>
+    </div> -->
+
+  <div class="container">
+		<h2 id="status"></h2>
+	</div>
+
+	<div class="container">
+		<p id="content">
+	    <button id="refresh">
+	      刷新数据!
+	    </button>
+	    <button id="kick_out">
+	    	踢人！(放心大胆的点吧！)
+	    </button>
+  	</p>
+		<table class="table table-striped table-hover">
+		  <thead>
+		    <tr>
+		      <th>
+		      	<span>昵称</span>
+		      </th>
+		      <th>
+			      <span>贡献值</span>
+			      <span class="pull-right">
+			      	<a href="/sort/points-up"><span id="points-up" class="glyphicon glyphicon-menu-up" aria-hidden="true"></span></a>
+		      		<a href="/sort/points-down"><span id="points-down" class="glyphicon glyphicon-menu-down" aria-hidden="true"></span></a>
+			      </span>
+		      </th>
+		      <th>
+		      	<span>组龄</span>
+			      <span class="pull-right">
+			      	<a href="/sort/days-up"><span id="days-up" class="glyphicon glyphicon-menu-up" aria-hidden="true"></span></a>
+		      		<a href="/sort/days-down"><span id="days-down" class="glyphicon glyphicon-menu-down" aria-hidden="true"></span></a>
+			      </span>
+			    </th>
+		      <th>
+		      	<span>打卡率</span>
+			      <span class="pull-right">
+			      	<a href="/sort/checkin_rate-up"><span id="checkin_rate-up" class="glyphicon glyphicon-menu-up" aria-hidden="true"></span></a>
+		      		<a href="/sort/checkin_rate-down"><span id="checkin_rate-down" class="glyphicon glyphicon-menu-down" aria-hidden="true"></span></a>
+			      </span>
+		      </th>
+		      <th>
+						<span>今日打卡状态</span>
+			      <span class="pull-right">
+			      	<a href="/sort/status-up"><span id="status-up" class="glyphicon glyphicon-menu-up" aria-hidden="true"></span></a>
+		      		<a href="/sort/status-down"><span id="status-down" class="glyphicon glyphicon-menu-down" aria-hidden="true"></span></a>
+			      </span>
+		      </th>
+		      <th>
+		      	<span>平均日贡献值</span>
+			      <span class="pull-right">
+			      	<a href="/sort/average_point-up"><span id="average_point-up" class="glyphicon glyphicon-menu-up" aria-hidden="true"></span></a>
+		      		<a href="/sort/average_point-down"><span id="average_point-down" class="glyphicon glyphicon-menu-down" aria-hidden="true"></span></a>
+			      </span>
+		      </th>
+		    </tr>
+		  </thead>
+		  <tbody id="tbody">
+		  	{{table_content|safe}}
+		  </tbody>
+		</table>
+	</div> <!-- end of container -->
+
+</body>
+</html>

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>登陆至管理系统</title>
+  <meta charset="utf-8">
+  <script src="{{url_for('static', filename='js/ajax-utils.js', _external=Ture)}}"></script>
+</head>
+<style>
+  body {
+    margin: 40px;
+  }
+
+  .text-input {
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+
+  td > span {
+    font-size: 20px; 
+  }
+  .button {
+    padding: 13px 30px;
+    font-size: 20px;
+    background-color: #38c2a8;
+    color: #fff;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+    border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+    border-bottom: 2px solid #35a593;
+  }
+
+  footer {
+    margin-top: 10px;
+  }
+
+</style>
+<body>
+  <h1>欢迎使用扇贝小组管理工具</h1>
+  <div>
+    <h3 id="status"></h3>
+		<table id="table">
+
+			<tr>
+        <td>
+          <span>扇贝账户登陆名：</span>
+        </td>
+      </tr>
+      <tr>
+  			<td>
+          <input type="text" id="account" autocomplete="off" class="text-input">
+        </td>
+  	  </tr>
+
+      <tr>
+        <td>
+          <span>密码：</span>
+        </td>
+      </tr>
+      <tr>
+				<td>
+          <input type="password" id="password" autocomplete="off" class="text-input" onkeypress="if(event.keyCode==13) {document.getElementById('button').click();return false;}">
+        </td>
+			</tr>
+
+		</table>
+	  <input id="button" class="button" type="submit" value="登陆">
+  </div>
+  <footer>
+    Powered by Davidham3
+  </footer>
+  <script type="text/javascript">
+    login = function () {
+      var postData = {
+          "account": document.getElementById('account').value,
+          "password": document.getElementById('password').value};
+      if (document.getElementById('captcha') !== null) {
+        postData['captcha'] = document.getElementById('captcha').value
+      }
+       
+      postData = (function(obj){ // 转成post需要的字符串.
+          var str = "";
+       
+          for(var prop in obj){
+              str += prop + "=" + obj[prop] + "&"
+          }
+          return str;
+      })(postData);
+
+      function getRequestObject() {
+        if (XMLHttpRequest) {
+          return (new XMLHttpRequest());
+        } 
+        else if (ActiveXObject) {
+          // For very old IE browsers (optional)
+          return (new ActiveXObject("Microsoft.XMLHTTP"));
+        } 
+        else {
+          global.alert("Ajax is not supported!");
+          return(null); 
+        }
+      }
+      var xhr = getRequestObject();
+      console.log(xhr);
+      xhr.open("POST", "login", true);
+      xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+      xhr.onreadystatechange = function(){
+          var XMLHttpReq = xhr;
+          if (XMLHttpReq.readyState == 4) {
+              if (XMLHttpReq.status == 200) {
+                  var text = JSON.parse(XMLHttpReq.responseText);
+                  console.log(text);
+                  if (text['status'] == 'SUCCESS')
+                    window.location.href = '/index';
+                  else {
+                    if (text['status'] == 'captcha_needed') {
+                      temp = '<tr><td><span>验证码：</span></td></tr><tr><td><span><img src="' + text['image_url'] + '"></span><input type="text" id="captcha" autocomplete="off" class="text-input"></td></tr>';
+                      document.getElementById('table').innerHTML += temp;
+                      document.getElementById('account').value = text['account'];
+                      document.getElementById('password').value = text['password']
+                    }
+                    else {
+                      temp = '<h3 style="color:red">' + text + '</h3>';
+                      document.getElementById('status').innerHTML = temp;
+                    }
+                  }
+              }
+          }
+      };
+      xhr.send(postData);
+    }
+
+    document.addEventListener("DOMContentLoaded",
+      function (event) {
+        document.getElementsByClassName('button')[0].addEventListener("click", login);
+      }
+    );
+  </script>
+</body>
+</html>
